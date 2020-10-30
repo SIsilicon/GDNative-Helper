@@ -1,0 +1,106 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://addons/silicon.util.gd_native_helper/library_manager.gd" type="Script" id=1]
+
+[node name="Control" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+rect_min_size = Vector2( 0, 20 )
+size_flags_vertical = 3
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
+margin_right = 1024.0
+margin_bottom = 20.0
+
+[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer"]
+margin_top = 3.0
+margin_right = 59.0
+margin_bottom = 17.0
+text = "Libraries:"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Reload" type="Button" parent="VBoxContainer/HBoxContainer"]
+margin_left = 942.0
+margin_right = 1024.0
+margin_bottom = 20.0
+size_flags_horizontal = 10
+text = "Reload List"
+
+[node name="HSplitContainer" type="HSplitContainer" parent="VBoxContainer"]
+margin_top = 24.0
+margin_right = 1024.0
+margin_bottom = 600.0
+size_flags_vertical = 3
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Tree" type="Tree" parent="VBoxContainer/HSplitContainer"]
+margin_right = 676.0
+margin_bottom = 576.0
+size_flags_horizontal = 3
+hide_root = true
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/HSplitContainer"]
+margin_left = 688.0
+margin_right = 1024.0
+margin_bottom = 576.0
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.5
+
+[node name="CreateLib" type="Button" parent="VBoxContainer/HSplitContainer/VBoxContainer"]
+margin_right = 336.0
+margin_bottom = 20.0
+text = "Create New Library"
+
+[node name="DeleteLib" type="Button" parent="VBoxContainer/HSplitContainer/VBoxContainer"]
+margin_top = 24.0
+margin_right = 336.0
+margin_bottom = 44.0
+disabled = true
+text = "Delete Library"
+
+[node name="HSeparator" type="HSeparator" parent="VBoxContainer/HSplitContainer/VBoxContainer"]
+margin_top = 48.0
+margin_right = 336.0
+margin_bottom = 52.0
+
+[node name="CreateClass" type="Button" parent="VBoxContainer/HSplitContainer/VBoxContainer"]
+margin_top = 56.0
+margin_right = 336.0
+margin_bottom = 76.0
+disabled = true
+text = "Create Class"
+
+[node name="DeleteClass" type="Button" parent="VBoxContainer/HSplitContainer/VBoxContainer"]
+margin_top = 80.0
+margin_right = 336.0
+margin_bottom = 100.0
+disabled = true
+text = "Delete Class"
+
+[node name="FileDialog" type="FileDialog" parent="."]
+margin_right = 315.0
+margin_bottom = 130.0
+window_title = "Create a Library"
+resizable = true
+filters = PoolStringArray( ".gdnlib" )
+current_file = "new_library.gdnlib"
+current_path = "res://new_library.gdnlib"
+[connection signal="item_selected" from="VBoxContainer/HSplitContainer/Tree" to="." method="_on_Tree_item_selected"]
+[connection signal="pressed" from="VBoxContainer/HSplitContainer/VBoxContainer/CreateLib" to="." method="_on_CreateLib_pressed"]
+[connection signal="pressed" from="VBoxContainer/HSplitContainer/VBoxContainer/DeleteLib" to="." method="_on_DeleteLib_pressed"]
+[connection signal="file_selected" from="FileDialog" to="." method="_on_FileDialog_file_selected"]
