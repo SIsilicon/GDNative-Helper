@@ -16,11 +16,12 @@ _global_script_class_icons={
 [application]
 
 config/name="GDNative Helper Plugin"
+run/main_scene="res://addons/silicon.util.gdnative_helper/library_manager.tscn"
 config/icon="res://icon.png"
 
 [editor_plugins]
 
-enabled=PoolStringArray( "godot-plugin-refresher", "silicon.util.gd_native_helper" )
+enabled=PoolStringArray( "editor_icon_previewer", "godot-plugin-refresher", "silicon.util.gdnative_helper" )
 
 [rendering]
 

@@ -1,0 +1,813 @@
+[gd_scene load_steps=13 format=2]
+
+[ext_resource path="res://addons/silicon.util.gdnative_helper/library_manager.gd" type="Script" id=1]
+[ext_resource path="res://addons/silicon.util.gdnative_helper/create_library.gd" type="Script" id=2]
+[ext_resource path="res://addons/silicon.util.gdnative_helper/create_class.gd" type="Script" id=3]
+[ext_resource path="res://addons/silicon.util.gdnative_helper/build_library.gd" type="Script" id=4]
+[ext_resource path="res://addons/silicon.util.gdnative_helper/platform_logos/windows.png" type="Texture" id=5]
+[ext_resource path="res://addons/silicon.util.gdnative_helper/platform_logos/linux.png" type="Texture" id=6]
+[ext_resource path="res://addons/silicon.util.gdnative_helper/platform_logos/mac_osx.png" type="Texture" id=7]
+[ext_resource path="res://addons/silicon.util.gdnative_helper/platform_logos/android.png" type="Texture" id=8]
+[ext_resource path="res://addons/silicon.util.gdnative_helper/platform_logos/ios.png" type="Texture" id=9]
+
+[sub_resource type="Image" id=4]
+data = {
+"data": PoolByteArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ),
+"format": "LumAlpha8",
+"height": 16,
+"mipmaps": false,
+"width": 16
+}
+
+[sub_resource type="ImageTexture" id=2]
+flags = 4
+flags = 4
+image = SubResource( 4 )
+size = Vector2( 16, 16 )
+
+[sub_resource type="ButtonGroup" id=3]
+
+[node name="Control" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+rect_min_size = Vector2( 0, 230 )
+size_flags_vertical = 3
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
+margin_right = 1024.0
+margin_bottom = 20.0
+
+[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer"]
+margin_top = 3.0
+margin_right = 59.0
+margin_bottom = 17.0
+text = "Libraries:"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Reload" type="Button" parent="VBoxContainer/HBoxContainer"]
+margin_left = 942.0
+margin_right = 1024.0
+margin_bottom = 20.0
+size_flags_horizontal = 10
+text = "Reload List"
+
+[node name="HSplitContainer" type="HSplitContainer" parent="VBoxContainer"]
+margin_top = 24.0
+margin_right = 1024.0
+margin_bottom = 600.0
+size_flags_vertical = 3
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Tree" type="Tree" parent="VBoxContainer/HSplitContainer"]
+margin_right = 676.0
+margin_bottom = 576.0
+size_flags_horizontal = 3
+hide_root = true
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/HSplitContainer"]
+margin_left = 688.0
+margin_right = 1024.0
+margin_bottom = 576.0
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.5
+
+[node name="CreateLib" type="Button" parent="VBoxContainer/HSplitContainer/VBoxContainer"]
+margin_right = 336.0
+margin_bottom = 20.0
+text = "Create New Library"
+
+[node name="DeleteLib" type="Button" parent="VBoxContainer/HSplitContainer/VBoxContainer"]
+margin_top = 24.0
+margin_right = 336.0
+margin_bottom = 44.0
+disabled = true
+text = "Delete Library"
+
+[node name="BuildLib" type="Button" parent="VBoxContainer/HSplitContainer/VBoxContainer"]
+margin_top = 48.0
+margin_right = 336.0
+margin_bottom = 68.0
+disabled = true
+text = "Build Library"
+
+[node name="HSeparator" type="HSeparator" parent="VBoxContainer/HSplitContainer/VBoxContainer"]
+margin_top = 72.0
+margin_right = 336.0
+margin_bottom = 76.0
+
+[node name="CreateClass" type="Button" parent="VBoxContainer/HSplitContainer/VBoxContainer"]
+margin_top = 80.0
+margin_right = 336.0
+margin_bottom = 100.0
+disabled = true
+text = "Create Class"
+
+[node name="EditClass" type="Button" parent="VBoxContainer/HSplitContainer/VBoxContainer"]
+margin_top = 104.0
+margin_right = 336.0
+margin_bottom = 124.0
+disabled = true
+text = "Edit Class Source"
+
+[node name="DeleteClass" type="Button" parent="VBoxContainer/HSplitContainer/VBoxContainer"]
+margin_top = 128.0
+margin_right = 336.0
+margin_bottom = 148.0
+disabled = true
+text = "Delete Class"
+
+[node name="CreateClassDialog" type="WindowDialog" parent="."]
+margin_right = 305.0
+margin_bottom = 179.0
+window_title = "Create Class"
+resizable = true
+script = ExtResource( 3 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Container" type="VBoxContainer" parent="CreateClassDialog"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 7.0
+margin_top = 5.0
+margin_right = -8.0
+margin_bottom = -7.0
+alignment = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Inherit" type="HBoxContainer" parent="CreateClassDialog/Container"]
+margin_right = 290.0
+margin_bottom = 24.0
+
+[node name="Label" type="Label" parent="CreateClassDialog/Container/Inherit"]
+margin_top = 5.0
+margin_right = 58.0
+margin_bottom = 19.0
+text = "Inherits: "
+
+[node name="LineEdit" type="LineEdit" parent="CreateClassDialog/Container/Inherit"]
+margin_left = 62.0
+margin_right = 290.0
+margin_bottom = 24.0
+size_flags_horizontal = 3
+text = "Node"
+
+[node name="Name" type="HBoxContainer" parent="CreateClassDialog/Container"]
+margin_top = 28.0
+margin_right = 290.0
+margin_bottom = 52.0
+
+[node name="Label" type="Label" parent="CreateClassDialog/Container/Name"]
+margin_top = 5.0
+margin_right = 46.0
+margin_bottom = 19.0
+text = "Name: "
+
+[node name="LineEdit" type="LineEdit" parent="CreateClassDialog/Container/Name"]
+margin_left = 50.0
+margin_right = 290.0
+margin_bottom = 24.0
+size_flags_horizontal = 3
+text = "Class"
+
+[node name="Path" type="HBoxContainer" parent="CreateClassDialog/Container"]
+margin_top = 56.0
+margin_right = 290.0
+margin_bottom = 80.0
+
+[node name="Label" type="Label" parent="CreateClassDialog/Container/Path"]
+margin_top = 5.0
+margin_right = 36.0
+margin_bottom = 19.0
+text = "Path: "
+
+[node name="LineEdit" type="LineEdit" parent="CreateClassDialog/Container/Path"]
+margin_left = 40.0
+margin_right = 274.0
+margin_bottom = 24.0
+size_flags_horizontal = 3
+text = "res://class.gdns"
+
+[node name="Button" type="Button" parent="CreateClassDialog/Container/Path"]
+margin_left = 278.0
+margin_right = 290.0
+margin_bottom = 24.0
+flat = true
+
+[node name="Config" type="RichTextLabel" parent="CreateClassDialog/Container"]
+margin_top = 84.0
+margin_right = 290.0
+margin_bottom = 143.0
+size_flags_vertical = 3
+bbcode_enabled = true
+
+[node name="Buttons" type="HBoxContainer" parent="CreateClassDialog/Container"]
+margin_top = 147.0
+margin_right = 290.0
+margin_bottom = 167.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Padding" type="Control" parent="CreateClassDialog/Container/Buttons"]
+margin_right = 54.0
+margin_bottom = 20.0
+size_flags_horizontal = 3
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="Create" type="Button" parent="CreateClassDialog/Container/Buttons"]
+margin_left = 58.0
+margin_right = 113.0
+margin_bottom = 20.0
+size_flags_horizontal = 3
+text = "Create"
+
+[node name="Padding2" type="Control" parent="CreateClassDialog/Container/Buttons"]
+margin_left = 117.0
+margin_right = 172.0
+margin_bottom = 20.0
+size_flags_horizontal = 3
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="Cancel" type="Button" parent="CreateClassDialog/Container/Buttons"]
+margin_left = 176.0
+margin_right = 231.0
+margin_bottom = 20.0
+size_flags_horizontal = 3
+text = "Cancel"
+
+[node name="Padding3" type="Control" parent="CreateClassDialog/Container/Buttons"]
+margin_left = 235.0
+margin_right = 290.0
+margin_bottom = 20.0
+size_flags_horizontal = 3
+__meta__ = {
+"_edit_lock_": true,
+"_edit_use_anchors_": false
+}
+
+[node name="FileDialog" type="FileDialog" parent="CreateClassDialog"]
+margin_left = 175.0
+margin_top = 164.0
+margin_right = 544.0
+margin_bottom = 377.0
+window_title = "Choose Location"
+resizable = true
+filters = PoolStringArray( "*.gdnlib ; GDNative Libraries" )
+current_file = "class.gdns"
+current_path = "res://class.gdns"
+
+[node name="CreateLibraryDialog" type="WindowDialog" parent="."]
+margin_left = 186.0
+margin_top = 145.0
+margin_right = 475.0
+margin_bottom = 309.0
+window_title = "Create Library"
+resizable = true
+script = ExtResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Container" type="VBoxContainer" parent="CreateLibraryDialog"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 9.0
+margin_top = 6.0
+margin_right = -8.0
+margin_bottom = -5.0
+custom_constants/separation = 6
+alignment = 1
+__meta__ = {
+"_edit_lock_": true,
+"_edit_use_anchors_": false
+}
+
+[node name="Language" type="HBoxContainer" parent="CreateLibraryDialog/Container"]
+margin_right = 272.0
+margin_bottom = 20.0
+
+[node name="Label" type="Label" parent="CreateLibraryDialog/Container/Language"]
+margin_top = 3.0
+margin_right = 67.0
+margin_bottom = 17.0
+text = "Language: "
+
+[node name="OptionButton" type="OptionButton" parent="CreateLibraryDialog/Container/Language"]
+margin_left = 71.0
+margin_right = 272.0
+margin_bottom = 20.0
+size_flags_horizontal = 3
+text = "C++"
+items = [ "C", null, false, 0, null, "C++", null, false, 1, null ]
+selected = 1
+
+[node name="Path" type="HBoxContainer" parent="CreateLibraryDialog/Container"]
+margin_top = 26.0
+margin_right = 272.0
+margin_bottom = 50.0
+
+[node name="Label" type="Label" parent="CreateLibraryDialog/Container/Path"]
+margin_top = 5.0
+margin_right = 36.0
+margin_bottom = 19.0
+text = "Path: "
+
+[node name="LineEdit" type="LineEdit" parent="CreateLibraryDialog/Container/Path"]
+margin_left = 40.0
+margin_right = 240.0
+margin_bottom = 24.0
+size_flags_horizontal = 3
+text = "res://Library.gdnlib"
+
+[node name="Button" type="Button" parent="CreateLibraryDialog/Container/Path"]
+margin_left = 244.0
+margin_right = 272.0
+margin_bottom = 24.0
+icon = SubResource( 2 )
+flat = true
+
+[node name="Config" type="RichTextLabel" parent="CreateLibraryDialog/Container"]
+margin_top = 56.0
+margin_right = 272.0
+margin_bottom = 127.0
+size_flags_vertical = 3
+bbcode_enabled = true
+bbcode_text = "[color=#44FF44]- We're all good[/color]
+[color=#FF0000]- This is an error[/color]"
+text = "- We're all good
+- This is an error"
+
+[node name="Buttons" type="HBoxContainer" parent="CreateLibraryDialog/Container"]
+margin_top = 133.0
+margin_right = 272.0
+margin_bottom = 153.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Padding" type="Control" parent="CreateLibraryDialog/Container/Buttons"]
+margin_right = 49.0
+margin_bottom = 20.0
+size_flags_horizontal = 3
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="Create" type="Button" parent="CreateLibraryDialog/Container/Buttons"]
+margin_left = 53.0
+margin_right = 106.0
+margin_bottom = 20.0
+size_flags_horizontal = 3
+text = "Create"
+
+[node name="Padding2" type="Control" parent="CreateLibraryDialog/Container/Buttons"]
+margin_left = 110.0
+margin_right = 160.0
+margin_bottom = 20.0
+size_flags_horizontal = 3
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="Cancel" type="Button" parent="CreateLibraryDialog/Container/Buttons"]
+margin_left = 164.0
+margin_right = 218.0
+margin_bottom = 20.0
+size_flags_horizontal = 3
+text = "Cancel"
+
+[node name="Padding3" type="Control" parent="CreateLibraryDialog/Container/Buttons"]
+margin_left = 222.0
+margin_right = 272.0
+margin_bottom = 20.0
+size_flags_horizontal = 3
+__meta__ = {
+"_edit_lock_": true,
+"_edit_use_anchors_": false
+}
+
+[node name="FileDialog" type="FileDialog" parent="CreateLibraryDialog"]
+margin_left = -11.0
+margin_top = 19.0
+margin_right = 358.0
+margin_bottom = 232.0
+window_title = "Choose Location"
+resizable = true
+filters = PoolStringArray( "*.gdnlib ; GDNative Libraries" )
+current_file = "Library.gdnlib"
+current_path = "res://Library.gdnlib"
+
+[node name="BuildLibraryDialog" type="WindowDialog" parent="."]
+visible = true
+margin_left = 180.0
+margin_top = 175.0
+margin_right = 630.0
+margin_bottom = 476.0
+window_title = "Build Library"
+resizable = true
+script = ExtResource( 4 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Container" type="VBoxContainer" parent="BuildLibraryDialog"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 16.0
+margin_top = 9.0
+margin_right = -16.0
+margin_bottom = -10.0
+alignment = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Header" type="HBoxContainer" parent="BuildLibraryDialog/Container"]
+margin_right = 418.0
+margin_bottom = 14.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="BuildLibraryDialog/Container/Header"]
+margin_right = 105.0
+margin_bottom = 14.0
+size_flags_horizontal = 3
+size_flags_vertical = 0
+size_flags_stretch_ratio = 0.34
+text = "Platform"
+align = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label2" type="Label" parent="BuildLibraryDialog/Container/Header"]
+margin_left = 109.0
+margin_right = 418.0
+margin_bottom = 14.0
+size_flags_horizontal = 3
+size_flags_vertical = 0
+text = "Architectures"
+align = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Platforms" type="HBoxContainer" parent="BuildLibraryDialog/Container"]
+margin_top = 18.0
+margin_right = 418.0
+margin_bottom = 213.0
+size_flags_vertical = 3
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Labels" type="VBoxContainer" parent="BuildLibraryDialog/Container/Platforms"]
+margin_right = 102.0
+margin_bottom = 195.0
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.34
+
+[node name="Windows" type="HBoxContainer" parent="BuildLibraryDialog/Container/Platforms/Labels"]
+margin_right = 102.0
+margin_bottom = 35.0
+size_flags_vertical = 3
+
+[node name="Logo" type="TextureRect" parent="BuildLibraryDialog/Container/Platforms/Labels/Windows"]
+margin_top = 1.0
+margin_right = 32.0
+margin_bottom = 33.0
+size_flags_horizontal = 4
+size_flags_vertical = 6
+texture = ExtResource( 5 )
+stretch_mode = 5
+
+[node name="Label" type="Label" parent="BuildLibraryDialog/Container/Platforms/Labels/Windows"]
+margin_left = 36.0
+margin_top = 10.0
+margin_right = 94.0
+margin_bottom = 24.0
+text = "Windows"
+align = 1
+
+[node name="MacOS" type="HBoxContainer" parent="BuildLibraryDialog/Container/Platforms/Labels"]
+margin_top = 39.0
+margin_right = 102.0
+margin_bottom = 75.0
+size_flags_vertical = 3
+
+[node name="Logo" type="TextureRect" parent="BuildLibraryDialog/Container/Platforms/Labels/MacOS"]
+margin_top = 2.0
+margin_right = 32.0
+margin_bottom = 34.0
+size_flags_horizontal = 4
+size_flags_vertical = 6
+texture = ExtResource( 7 )
+stretch_mode = 5
+
+[node name="Label" type="Label" parent="BuildLibraryDialog/Container/Platforms/Labels/MacOS"]
+margin_left = 36.0
+margin_top = 11.0
+margin_right = 92.0
+margin_bottom = 25.0
+text = "Mac OSX"
+align = 1
+
+[node name="Linux" type="HBoxContainer" parent="BuildLibraryDialog/Container/Platforms/Labels"]
+margin_top = 79.0
+margin_right = 102.0
+margin_bottom = 115.0
+size_flags_vertical = 3
+
+[node name="Logo" type="TextureRect" parent="BuildLibraryDialog/Container/Platforms/Labels/Linux"]
+margin_top = 2.0
+margin_right = 32.0
+margin_bottom = 34.0
+size_flags_horizontal = 4
+size_flags_vertical = 6
+texture = ExtResource( 6 )
+stretch_mode = 5
+
+[node name="Label" type="Label" parent="BuildLibraryDialog/Container/Platforms/Labels/Linux"]
+margin_left = 36.0
+margin_top = 11.0
+margin_right = 70.0
+margin_bottom = 25.0
+text = "Linux"
+align = 1
+
+[node name="Android" type="HBoxContainer" parent="BuildLibraryDialog/Container/Platforms/Labels"]
+margin_top = 119.0
+margin_right = 102.0
+margin_bottom = 155.0
+size_flags_vertical = 3
+
+[node name="Logo" type="TextureRect" parent="BuildLibraryDialog/Container/Platforms/Labels/Android"]
+margin_top = 2.0
+margin_right = 32.0
+margin_bottom = 34.0
+size_flags_horizontal = 4
+size_flags_vertical = 6
+texture = ExtResource( 8 )
+stretch_mode = 5
+
+[node name="Label" type="Label" parent="BuildLibraryDialog/Container/Platforms/Labels/Android"]
+margin_left = 36.0
+margin_top = 11.0
+margin_right = 86.0
+margin_bottom = 25.0
+text = "Android"
+align = 1
+
+[node name="IOS" type="HBoxContainer" parent="BuildLibraryDialog/Container/Platforms/Labels"]
+margin_top = 159.0
+margin_right = 102.0
+margin_bottom = 195.0
+size_flags_vertical = 3
+
+[node name="Logo" type="TextureRect" parent="BuildLibraryDialog/Container/Platforms/Labels/IOS"]
+margin_top = 2.0
+margin_right = 32.0
+margin_bottom = 34.0
+size_flags_horizontal = 4
+size_flags_vertical = 6
+texture = ExtResource( 9 )
+stretch_mode = 5
+
+[node name="Label" type="Label" parent="BuildLibraryDialog/Container/Platforms/Labels/IOS"]
+margin_left = 36.0
+margin_top = 11.0
+margin_right = 58.0
+margin_bottom = 25.0
+text = "iOS"
+align = 1
+
+[node name="Architectures" type="VBoxContainer" parent="BuildLibraryDialog/Container/Platforms"]
+margin_left = 106.0
+margin_right = 417.0
+margin_bottom = 195.0
+size_flags_horizontal = 3
+
+[node name="Windows" type="HBoxContainer" parent="BuildLibraryDialog/Container/Platforms/Architectures"]
+margin_right = 311.0
+margin_bottom = 35.0
+size_flags_vertical = 3
+
+[node name="32" type="CheckBox" parent="BuildLibraryDialog/Container/Platforms/Architectures/Windows"]
+margin_right = 66.0
+margin_bottom = 35.0
+text = "32-bit"
+
+[node name="64" type="CheckBox" parent="BuildLibraryDialog/Container/Platforms/Architectures/Windows"]
+margin_left = 70.0
+margin_right = 136.0
+margin_bottom = 35.0
+text = "64-bit"
+
+[node name="MacOS" type="HBoxContainer" parent="BuildLibraryDialog/Container/Platforms/Architectures"]
+margin_top = 39.0
+margin_right = 311.0
+margin_bottom = 75.0
+size_flags_vertical = 3
+
+[node name="64" type="CheckBox" parent="BuildLibraryDialog/Container/Platforms/Architectures/MacOS"]
+margin_right = 66.0
+margin_bottom = 36.0
+text = "64-bit"
+
+[node name="Linux" type="HBoxContainer" parent="BuildLibraryDialog/Container/Platforms/Architectures"]
+margin_top = 79.0
+margin_right = 311.0
+margin_bottom = 115.0
+size_flags_vertical = 3
+
+[node name="32" type="CheckBox" parent="BuildLibraryDialog/Container/Platforms/Architectures/Linux"]
+margin_right = 66.0
+margin_bottom = 36.0
+text = "32-bit"
+
+[node name="64" type="CheckBox" parent="BuildLibraryDialog/Container/Platforms/Architectures/Linux"]
+margin_left = 70.0
+margin_right = 136.0
+margin_bottom = 36.0
+text = "64-bit"
+
+[node name="Android" type="HBoxContainer" parent="BuildLibraryDialog/Container/Platforms/Architectures"]
+margin_top = 119.0
+margin_right = 311.0
+margin_bottom = 155.0
+size_flags_vertical = 3
+
+[node name="arm7" type="CheckBox" parent="BuildLibraryDialog/Container/Platforms/Architectures/Android"]
+margin_right = 80.0
+margin_bottom = 36.0
+text = "armv7-a"
+
+[node name="arm8" type="CheckBox" parent="BuildLibraryDialog/Container/Platforms/Architectures/Android"]
+margin_left = 84.0
+margin_right = 180.0
+margin_bottom = 36.0
+text = "arm64v8-a"
+
+[node name="86" type="CheckBox" parent="BuildLibraryDialog/Container/Platforms/Architectures/Android"]
+margin_left = 184.0
+margin_right = 235.0
+margin_bottom = 36.0
+text = "x86"
+
+[node name="86_64" type="CheckBox" parent="BuildLibraryDialog/Container/Platforms/Architectures/Android"]
+margin_left = 239.0
+margin_right = 311.0
+margin_bottom = 36.0
+text = "x86-64"
+
+[node name="IOS" type="HBoxContainer" parent="BuildLibraryDialog/Container/Platforms/Architectures"]
+margin_top = 159.0
+margin_right = 311.0
+margin_bottom = 195.0
+size_flags_vertical = 3
+
+[node name="arm7" type="CheckBox" parent="BuildLibraryDialog/Container/Platforms/Architectures/IOS"]
+margin_right = 80.0
+margin_bottom = 36.0
+text = "armv7-a"
+
+[node name="arm8" type="CheckBox" parent="BuildLibraryDialog/Container/Platforms/Architectures/IOS"]
+margin_left = 84.0
+margin_right = 180.0
+margin_bottom = 36.0
+text = "arm64v8-a"
+
+[node name="Target" type="HBoxContainer" parent="BuildLibraryDialog/Container"]
+margin_top = 217.0
+margin_right = 418.0
+margin_bottom = 257.0
+size_flags_vertical = 3
+size_flags_stretch_ratio = 0.21
+alignment = 1
+
+[node name="Debug" type="CheckBox" parent="BuildLibraryDialog/Container/Target"]
+margin_left = 133.0
+margin_right = 202.0
+margin_bottom = 40.0
+pressed = true
+group = SubResource( 3 )
+text = "Debug"
+align = 1
+
+[node name="Release" type="CheckBox" parent="BuildLibraryDialog/Container/Target"]
+margin_left = 206.0
+margin_right = 284.0
+margin_bottom = 40.0
+group = SubResource( 3 )
+text = "Release"
+align = 1
+
+[node name="Buttons" type="HBoxContainer" parent="BuildLibraryDialog/Container"]
+margin_top = 261.0
+margin_right = 418.0
+margin_bottom = 281.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Padding" type="Control" parent="BuildLibraryDialog/Container/Buttons"]
+margin_right = 80.0
+margin_bottom = 20.0
+size_flags_horizontal = 3
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="Build" type="Button" parent="BuildLibraryDialog/Container/Buttons"]
+margin_left = 84.0
+margin_right = 164.0
+margin_bottom = 20.0
+size_flags_horizontal = 3
+text = "Build"
+
+[node name="Padding2" type="Control" parent="BuildLibraryDialog/Container/Buttons"]
+margin_left = 168.0
+margin_right = 249.0
+margin_bottom = 20.0
+size_flags_horizontal = 3
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="Cancel" type="Button" parent="BuildLibraryDialog/Container/Buttons"]
+margin_left = 253.0
+margin_right = 333.0
+margin_bottom = 20.0
+size_flags_horizontal = 3
+text = "Cancel"
+
+[node name="Padding3" type="Control" parent="BuildLibraryDialog/Container/Buttons"]
+margin_left = 337.0
+margin_right = 418.0
+margin_bottom = 20.0
+size_flags_horizontal = 3
+__meta__ = {
+"_edit_lock_": true,
+"_edit_use_anchors_": false
+}
+[connection signal="pressed" from="VBoxContainer/HBoxContainer/Reload" to="." method="_on_Reload_pressed"]
+[connection signal="item_selected" from="VBoxContainer/HSplitContainer/Tree" to="." method="_on_Tree_item_selected"]
+[connection signal="pressed" from="VBoxContainer/HSplitContainer/VBoxContainer/CreateLib" to="." method="_on_CreateLib_pressed"]
+[connection signal="pressed" from="VBoxContainer/HSplitContainer/VBoxContainer/DeleteLib" to="." method="_on_DeleteLib_pressed"]
+[connection signal="pressed" from="VBoxContainer/HSplitContainer/VBoxContainer/BuildLib" to="." method="_on_BuildLib_pressed"]
+[connection signal="pressed" from="VBoxContainer/HSplitContainer/VBoxContainer/CreateClass" to="." method="_on_CreateClass_pressed"]
+[connection signal="pressed" from="VBoxContainer/HSplitContainer/VBoxContainer/EditClass" to="." method="_on_EditClass_pressed"]
+[connection signal="pressed" from="VBoxContainer/HSplitContainer/VBoxContainer/DeleteClass" to="." method="_on_DeleteClass_pressed"]
+[connection signal="about_to_show" from="CreateClassDialog" to="CreateClassDialog" method="_on_about_to_show"]
+[connection signal="text_changed" from="CreateClassDialog/Container/Inherit/LineEdit" to="CreateClassDialog" method="_on_LineEdit_inherit_changed"]
+[connection signal="text_changed" from="CreateClassDialog/Container/Name/LineEdit" to="CreateClassDialog" method="_on_LineEdit_name_changed"]
+[connection signal="text_changed" from="CreateClassDialog/Container/Path/LineEdit" to="CreateClassDialog" method="_on_LineEdit_path_changed"]
+[connection signal="pressed" from="CreateClassDialog/Container/Path/Button" to="CreateClassDialog" method="_on_Path_pressed"]
+[connection signal="pressed" from="CreateClassDialog/Container/Buttons/Create" to="CreateClassDialog" method="_on_Create_pressed"]
+[connection signal="pressed" from="CreateClassDialog/Container/Buttons/Cancel" to="CreateClassDialog" method="_on_Cancel_pressed"]
+[connection signal="file_selected" from="CreateClassDialog/FileDialog" to="CreateClassDialog" method="_on_FileDialog_file_selected"]
+[connection signal="about_to_show" from="CreateLibraryDialog" to="CreateLibraryDialog" method="_on_about_to_show"]
+[connection signal="text_changed" from="CreateLibraryDialog/Container/Path/LineEdit" to="CreateLibraryDialog" method="_on_LineEdit_path_changed"]
+[connection signal="pressed" from="CreateLibraryDialog/Container/Path/Button" to="CreateLibraryDialog" method="_on_Path_pressed"]
+[connection signal="pressed" from="CreateLibraryDialog/Container/Buttons/Create" to="CreateLibraryDialog" method="_on_Create_pressed"]
+[connection signal="pressed" from="CreateLibraryDialog/Container/Buttons/Cancel" to="CreateLibraryDialog" method="_on_Cancel_pressed"]
+[connection signal="file_selected" from="CreateLibraryDialog/FileDialog" to="CreateLibraryDialog" method="_on_FileDialog_file_selected"]
+[connection signal="toggled" from="BuildLibraryDialog/Container/Platforms/Architectures/Windows/32" to="BuildLibraryDialog" method="_on_Architectures_toggled" binds= [ "windows", "32" ]]
+[connection signal="toggled" from="BuildLibraryDialog/Container/Platforms/Architectures/Windows/64" to="BuildLibraryDialog" method="_on_Architectures_toggled" binds= [ "windows", "64" ]]
+[connection signal="toggled" from="BuildLibraryDialog/Container/Platforms/Architectures/MacOS/64" to="BuildLibraryDialog" method="_on_Architectures_toggled" binds= [ "macos", "64" ]]
+[connection signal="toggled" from="BuildLibraryDialog/Container/Platforms/Architectures/Linux/32" to="BuildLibraryDialog" method="_on_Architectures_toggled" binds= [ "linux", "32" ]]
+[connection signal="toggled" from="BuildLibraryDialog/Container/Platforms/Architectures/Linux/64" to="BuildLibraryDialog" method="_on_Architectures_toggled" binds= [ "linux", "64" ]]
+[connection signal="toggled" from="BuildLibraryDialog/Container/Platforms/Architectures/Android/arm7" to="BuildLibraryDialog" method="_on_Architectures_toggled" binds= [ "android", "armv7-a" ]]
+[connection signal="toggled" from="BuildLibraryDialog/Container/Platforms/Architectures/Android/arm8" to="BuildLibraryDialog" method="_on_Architectures_toggled" binds= [ "android", "arm64v8-a" ]]
+[connection signal="toggled" from="BuildLibraryDialog/Container/Platforms/Architectures/Android/86" to="BuildLibraryDialog" method="_on_Architectures_toggled" binds= [ "android", "x86" ]]
+[connection signal="toggled" from="BuildLibraryDialog/Container/Platforms/Architectures/Android/86_64" to="BuildLibraryDialog" method="_on_Architectures_toggled" binds= [ "android", "x86-64" ]]
+[connection signal="toggled" from="BuildLibraryDialog/Container/Platforms/Architectures/IOS/arm7" to="BuildLibraryDialog" method="_on_Architectures_toggled" binds= [ "ios", "armv7-a" ]]
+[connection signal="toggled" from="BuildLibraryDialog/Container/Platforms/Architectures/IOS/arm8" to="BuildLibraryDialog" method="_on_Architectures_toggled" binds= [ "ios", "arm64v8-a" ]]
+[connection signal="pressed" from="BuildLibraryDialog/Container/Target/Debug" to="BuildLibraryDialog" method="_on_Target_pressed" binds= [ "debug" ]]
+[connection signal="pressed" from="BuildLibraryDialog/Container/Target/Release" to="BuildLibraryDialog" method="_on_Target_pressed" binds= [ "release" ]]
+[connection signal="pressed" from="BuildLibraryDialog/Container/Buttons/Build" to="BuildLibraryDialog" method="_on_Build_pressed"]
+[connection signal="pressed" from="BuildLibraryDialog/Container/Buttons/Cancel" to="BuildLibraryDialog" method="_on_Cancel_pressed"]

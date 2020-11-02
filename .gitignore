@@ -1,3 +1,5 @@
 .vscode/
 .import/
 addons/godot-plugin-refresher/
+addons/gdnative_data/
+addons/editor_icon_previewer/
