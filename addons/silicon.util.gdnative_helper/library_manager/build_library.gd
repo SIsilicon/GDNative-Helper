@@ -1,5 +1,5 @@
 tool
-extends WindowDialog
+extends ConfirmationDialog
 
 signal finished()
 
@@ -24,6 +24,8 @@ var prev_build_failed := false
 
 
 func _ready() -> void:
+	get_ok().text = "Build"
+	
 	var file := File.new()
 	if file.file_exists(build_json_path):
 		file.open(build_json_path, File.READ)
@@ -62,10 +64,6 @@ func _on_Build_pressed() -> void:
 	file.store_line(to_json(platforms))
 	file.store_line(target)
 	file.close()
-
-
-func _on_Cancel_pressed() -> void:
-	hide()
 
 
 func _on_Architectures_toggled(button_pressed: bool, platform: String, arch: String) -> void:

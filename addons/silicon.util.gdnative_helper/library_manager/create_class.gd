@@ -1,5 +1,5 @@
 tool
-extends WindowDialog
+extends ConfirmationDialog
 
 onready var main: Control = get_parent()
 onready var cls_inherit: String = $Container/Inherit/LineEdit.text
@@ -8,6 +8,7 @@ onready var cls_name: String = $Container/Name/LineEdit.text
 
 func _on_about_to_show() -> void:
 	$Container/Path/Button.icon = get_icon("Folder", "EditorIcons")
+	get_ok().text = "Create"
 	update_configuration()
 
 
@@ -57,10 +58,6 @@ func _on_Create_pressed() -> void:
 	hide()
 
 
-func _on_Cancel_pressed() -> void:
-	hide()
-
-
 func _on_LineEdit_name_changed(new_text: String) -> void:
 	cls_name = new_text
 	update_configuration()
@@ -106,5 +103,5 @@ func update_configuration() -> void:
 	
 	var valid = message.count("[color=#FF0000]") == 0
 	$Container/Config.bbcode_text = message
-	$Container/Buttons/Create.disabled = not valid
+	get_ok().disabled = not valid
 

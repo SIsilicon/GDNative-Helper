@@ -1,5 +1,5 @@
 tool
-extends WindowDialog
+extends ConfirmationDialog
 
 onready var main: Control = get_parent()
 onready var library_path: String = $Container/Path/LineEdit.text
@@ -8,6 +8,7 @@ onready var language: String = $Container/Language/OptionButton.get_item_text($C
 
 func _on_about_to_show() -> void:
 	$Container/Path/Button.icon = get_icon("Folder", "EditorIcons")
+	get_ok().text = "Create"
 	update_configuration()
 
 
@@ -54,10 +55,6 @@ func _on_Create_pressed() -> void:
 	hide()
 
 
-func _on_Cancel_pressed() -> void:
-	hide()
-
-
 func update_configuration() -> void:
 	var message := ""
 	var valid := true
@@ -73,4 +70,4 @@ func update_configuration() -> void:
 		valid = false
 	
 	$Container/Config.bbcode_text = message
-	$Container/Buttons/Create.disabled = not valid
+	get_ok().disabled = not valid
