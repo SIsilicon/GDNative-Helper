@@ -1,4 +1,5 @@
 # GDNative Helper Plugin (WIP)
+[![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=XXXJ5ETNT5PSN)
 
 Hello Godot user! This plugin is meant to help you with programming in other languages via GDNative.
 GDNative is a kind of "interface" between Godot and other programming languages. By using special C bindings, any language can be compiled into a static or dynamic library and be used by your game project through `GDNativeLibrary` and `NativeScripts`. The process of setting up and compiling those libraries can be a little, _tedious_ most of the times.
@@ -74,9 +75,3 @@ With the build script, the plugin passes the following arguments to it.
 ## Contributing
 
 You may create pull requests and suggest new features for this plugin as you wish. If you're not a programming guru, you can still contribute by donating to me via PayPal. It would really help. :)
-
-<form action="https://www.paypal.com/donate" method="post" target="_top">
-<input type="hidden" name="hosted_button_id" value="XXXJ5ETNT5PSN" />
-<input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif" border="0" name="submit" title="PayPal - The safer, easier way to pay online!" alt="Donate with PayPal button" />
-<img alt="" border="0" src="https://www.paypal.com/en_JM/i/scr/pixel.gif" width="1" height="1" />
-</form>
