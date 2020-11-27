@@ -3,11 +3,16 @@ extends WindowDialog
 
 onready var main: Control = get_parent()
 onready var library_path: String = $Container/Path/LineEdit.text
+onready var language: String = $Container/Language/OptionButton.get_item_text($Container/Language/OptionButton.get_selected_id())
 
 
 func _on_about_to_show() -> void:
 	$Container/Path/Button.icon = get_icon("Folder", "EditorIcons")
 	update_configuration()
+
+
+func _on_Language_item_selected(index: int) -> void:
+	language = $Container/Language/OptionButton.get_item_text(index)
 
 
 func _on_Path_pressed() -> void:
@@ -30,18 +35,20 @@ func _on_Create_pressed() -> void:
 	file_path += "gdnlib"
 	var lib_name: String = library_path.get_file().replace(".gdnlib", "")
 	
-	main.generate_library(lib_name)
-	
 	var library := GDNativeLibrary.new()
+	library.config_file.set_value("entry", "Language", language)
 	library.resource_name = lib_name
 	library.resource_path = file_path
 	ResourceSaver.save(file_path, library, ResourceSaver.FLAG_CHANGE_PATH)
 	
 	var item: TreeItem = main.tree.create_item(main.tree_root)
+	item.set_selectable(1, false)
 	item.set_text(0, lib_name)
 	item.set_meta("library", library)
 	item.set_meta("file_path", library.resource_path)
 	item.set_meta("classes", {})
+	
+	main.generate_library(item)
 	
 	main.editor_file_system.scan()
 	hide()

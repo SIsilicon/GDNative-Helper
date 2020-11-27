@@ -1,0 +1,18 @@
+[general]
+
+singleton=false
+load_once=true
+symbol_prefix="godot_"
+reloadable=true
+
+[entry]
+
+Android.armeabi-v7a="res://addons/gdnative_data/TestLibrary/bin/lib-TestLibrary.android.debug.armv7.so"
+Windows.64="res://addons/gdnative_data/TestLibrary/bin/lib-TestLibrary.windows.debug.64.dll"
+Language="C++"
+X11.64="res://addons/gdnative_data/TestLibrary/bin/lib-TestLibrary.linux.debug.64.so"
+
+[dependencies]
+
+Android.armeabi-v7a=[  ]
+Windows.64=[  ]

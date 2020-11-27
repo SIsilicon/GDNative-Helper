@@ -4,3 +4,4 @@ addons/godot-plugin-refresher/
 addons/gdnative_data/
 addons/editor_icon_previewer/
 export_presets.cfg
+addons/silicon.util.gdnative_helper/.debug_languages

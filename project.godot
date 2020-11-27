@@ -16,13 +16,15 @@ _global_script_class_icons={
 [application]
 
 config/name="GDNative Helper Plugin"
-run/main_scene="res://addons/silicon.util.gdnative_helper/library_manager.tscn"
+run/main_scene="res://TestScene.tscn"
 config/icon="res://icon.png"
 
 [editor_plugins]
 
-enabled=PoolStringArray( "editor_icon_previewer", "godot-plugin-refresher", "silicon.util.gdnative_helper" )
+enabled=PoolStringArray( "godot-plugin-refresher", "silicon.util.gdnative_helper" )
 
 [rendering]
 
+quality/driver/driver_name="GLES2"
+vram_compression/import_etc=true
 environment/default_environment="res://default_env.tres"

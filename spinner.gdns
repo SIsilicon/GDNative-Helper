@@ -3,9 +3,9 @@
 [ext_resource path="res://TestLibrary.gdnlib" type="GDNativeLibrary" id=1]
 
 [resource]
-resource_name = "Test"
-class_name = "Test"
+resource_name = "Spinner"
+class_name = "Spinner"
 library = ExtResource( 1 )
 __meta__ = {
-"inherit": "Node"
+"inherit": "Node2D"
 }
