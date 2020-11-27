@@ -5,6 +5,8 @@ const LIBRARY_DATA_FOLDER = "res://addons/gdnative_data"
 
 onready var tree: Tree = $VBoxContainer/HSplitContainer/Tree
 
+signal console_opened
+
 var languages := {}
 
 var editor_file_system: EditorFileSystem
@@ -152,7 +154,7 @@ func _on_BuildIconUpdate_timeout() -> void:
 	while lib_first_item:
 		if lib_item.get_button_count(1):
 			for i in range(0, 8):
-				if lib_item.get_button(1, 0) == get_icon("Progress%d" % (i + 1), "EditorIcons"):
+				if lib_item.get_button(0, 0) == get_icon("Progress%d" % (i + 1), "EditorIcons"):
 					set_build_status_icon(lib_item, get_icon("Progress%d" % ((i + 1) % 8 + 1), "EditorIcons"))
 					break
 		
@@ -281,10 +283,10 @@ func set_build_status_icon(library_item: TreeItem, icon: Texture) -> void:
 		null: ""
 	}.get(icon, "icon error")
 	
-	if not library_item.get_button_count(1):
-		library_item.add_button(1, icon, 0, false)
+	if not library_item.get_button_count(0):
+		library_item.add_button(0, icon, 0)
 	else:
-		library_item.set_button(1, 0, icon)
+		library_item.set_button(0, 0, icon)
 	library_item.set_tooltip(1, tooltip)
 
 
@@ -344,3 +346,6 @@ func scan_languages() -> void:
 		file_dir = dir.get_next()
 	dir.list_dir_end()
 
+
+func _on_Tree_button_pressed(item: TreeItem, column: int, id: int) -> void:
+	emit_signal("console_opened")

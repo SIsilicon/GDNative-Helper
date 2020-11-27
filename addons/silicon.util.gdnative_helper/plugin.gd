@@ -13,6 +13,7 @@ func _enter_tree() -> void:
 	
 	library_manager = preload("library_manager/library_manager.tscn").instance()
 	library_manager.editor_file_system = get_editor_interface().get_resource_filesystem()
+	library_manager.connect("console_opened", self, "_on_LibraryManager_console_opened")
 	library_manager.data_dir = data_dir
 	add_control_to_bottom_panel(library_manager, "GDNative")
 
@@ -74,3 +75,7 @@ func setup_default_languages() -> void:
 		modify_dir(dir, plugin_dir + '/' + "native_languages", data_dir.plus_file("native_languages"), "copy")
 		if not debug_languages:
 			modify_dir(dir, plugin_dir + '/' + "native_languages", "", "remove")
+
+
+func _on_LibraryManager_console_opened() -> void:
+	make_bottom_panel_item_visible(library_manager.get_parent().get_child(0))
