@@ -3,5 +3,11 @@
 addons/godot-plugin-refresher/
 addons/gdnative_data/
 addons/editor_icon_previewer/
+addons/zylann.editor_debugger/
 export_presets.cfg
 addons/silicon.util.gdnative_helper/.debug_languages
+.gitignore
+native_solution.tres
+Library.gdnlib
+spinner.gdns
+test.gdns

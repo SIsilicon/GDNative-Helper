@@ -1,7 +1,7 @@
 #ifndef _%CLASS_NAME%_
 #define _%CLASS_NAME%_
 
-#include "%LIBRARY_FILE_NAME%.h"
+#include "%LIBRARY_NAME%.h"
 
 typedef struct {
 	// properties here

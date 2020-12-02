@@ -14,11 +14,42 @@ func _enter_tree() -> void:
 	library_manager = preload("library_manager/library_manager.tscn").instance()
 	library_manager.editor_file_system = get_editor_interface().get_resource_filesystem()
 	library_manager.data_dir = data_dir
+	library_manager.connect("console_requested", self, "_on_console_requested")
 	add_control_to_bottom_panel(library_manager, "GDNative")
+	
+	get_editor_interface().get_script_editor().connect("editor_script_changed", self, "_on_editor_script_changed")
 
 
 func _exit_tree() -> void:
 	remove_control_from_bottom_panel(library_manager)
+
+
+func _on_editor_script_changed(script: Script) -> void:
+	if script is NativeScript:
+		var script_editor := get_editor_interface().get_script_editor()
+		var tab_container := script_editor.get_child(0).get_child(1).get_child(1)
+		var script_text_editor := tab_container.get_child(script_editor.get_open_scripts().find(script))
+		var text_edit: TextEdit = script_text_editor.get_child(0).get_child(0).get_child(0)
+		if not text_edit:
+			return
+		
+		text_edit.syntax_highlighting = false
+		text_edit.breakpoint_gutter = false
+		text_edit.context_menu_enabled = false
+		text_edit.shortcut_keys_enabled = false
+		text_edit.readonly = true
+		
+		var solution: GDNativeSolution = library_manager.solution
+		var classs: Dictionary = library_manager.solution.find_class_by_script(script)
+		var file := File.new()
+		file.open(solution.class_abs_source_file(classs), File.READ)
+		text_edit.text = "READONLY DATA! EDIT YOUR CODE SOMEWHERE ELSE.\n\n"
+		text_edit.text += file.get_as_text()
+		file.close()
+
+
+func _on_console_requested() -> void:
+	make_bottom_panel_item_visible(library_manager.get_parent().get_child(0))
 
 
 func modify_dir(dir: Directory, from: String, to: String, mode := "copy") -> int:

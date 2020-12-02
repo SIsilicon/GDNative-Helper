@@ -1,0 +1,24 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://addons/silicon.util.gdnative_helper/utils/file_edit.gd" type="Script" id=1]
+
+[node name="FileEdit" type="HBoxContainer"]
+margin_right = 92.0
+margin_bottom = 24.0
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="LineEdit" type="LineEdit" parent="."]
+margin_right = 76.0
+margin_bottom = 24.0
+size_flags_horizontal = 3
+
+[node name="Button" type="Button" parent="."]
+margin_left = 80.0
+margin_right = 92.0
+margin_bottom = 24.0
+flat = true
+[connection signal="text_changed" from="LineEdit" to="." method="_on_LineEdit_text_changed"]
+[connection signal="pressed" from="Button" to="." method="_on_Button_pressed"]

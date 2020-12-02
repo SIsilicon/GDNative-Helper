@@ -1,4 +1,4 @@
-#include "%LIBRARY_FILE_NAME%.h"
+#include "%LIBRARY_NAME%.h"
 
 {CLASS_TEMPLATE}
 #include "%CLASS_FILE_NAME%.h"

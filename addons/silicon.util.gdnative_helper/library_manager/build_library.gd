@@ -1,5 +1,7 @@
 tool
-extends WindowDialog
+extends ConfirmationDialog
+
+const FileEdit = preload("res://addons/silicon.util.gdnative_helper/utils/file_edit.tscn")
 
 signal finished()
 
@@ -17,24 +19,18 @@ var platforms := {
 	ios = []
 }
 var target := "debug"
-onready var build_json_path: String = "%s/natvie_build_targets.json" % main.data_dir
 
 var building_lib_item: TreeItem
 var prev_build_failed := false
 
-
 func _ready() -> void:
-	var file := File.new()
-	if file.file_exists(build_json_path):
-		file.open(build_json_path, File.READ)
-		var json := file.get_line()
-		if validate_json(json).empty():
-			platforms = parse_json(json)
-		target = file.get_line()
-		update_targets_gui()
-		file.close()
-	
+	get_ok().text = "Build"
 	connect("finished", self, "finish_task")
+
+
+func _notification(what: int) -> void:
+	if what == NOTIFICATION_THEME_CHANGED:
+		$Container/Header/Label.get_stylebox("normal").bg_color = get_color("prop_category", "Editor") * 1.2
 
 
 func _exit_tree() -> void:
@@ -42,30 +38,9 @@ func _exit_tree() -> void:
 		thread.wait_to_finish()
 
 
-func _on_Build_pressed() -> void:
-	var task := {
-		platforms = platforms,
-		target = target,
-		lib_item = main.current_library_item
-	}
-	
-	if building_lib_item:
-		pending_tasks.append(task)
-	else:
-		if thread.is_active():
-			thread.wait_to_finish()
-		thread.start(self, "build", task)
-	hide()
-	
-	var file := File.new()
-	file.open(build_json_path, File.WRITE)
-	file.store_line(to_json(platforms))
-	file.store_line(target)
-	file.close()
-
-
-func _on_Cancel_pressed() -> void:
-	hide()
+func _on_about_to_show() -> void:
+	var library: String = main.current_library_item.get_text(0)
+	generate_build_gui(library)
 
 
 func _on_Architectures_toggled(button_pressed: bool, platform: String, arch: String) -> void:
@@ -79,14 +54,77 @@ func _on_Target_pressed(target: String) -> void:
 	self.target = target
 
 
+func _on_confirmed() -> void:
+	var task := {
+		platforms = platforms,
+		target = target,
+		lib_item = main.current_library_item
+	}
+	
+	if building_lib_item:
+		pending_tasks.append(task)
+	else:
+		if thread.is_active():
+			thread.wait_to_finish()
+		thread.start(self, "build", task)
+	hide()
+
+
+func generate_build_gui(lib_name: String) -> void:
+	var library: Dictionary = main.solution.libraries[lib_name]
+	var language: String = library.language
+	
+	var file := File.new()
+	assert(file.open(main.languages[language].config_path, File.READ) == OK)
+	var config: Dictionary = parse_json(file.get_as_text())
+	var build_options: Dictionary = config.get("build_options", {})
+	file.close()
+	
+	var options_container := $Container/Options/VBox
+	for child in options_container.get_children():
+		child.queue_free()
+	
+	for name in build_options:
+		var option: Dictionary = build_options[name]
+		var control: Control
+		match typeof(option.value):
+			TYPE_BOOL:
+				control = CheckBox.new()
+				control.pressed = option.value
+				control.text = "On"
+			TYPE_STRING:
+				if option.has("hint") and option.hint.find("IS_FOLDER") != -1:
+					control = FileEdit.instance()
+					control.mode = FileDialog.MODE_OPEN_DIR
+					control.file_dialog_node = $FileDialog
+				else:
+					control = LineEdit.new()
+					control.text = option.value
+		
+		if control:
+			var hbox := HBoxContainer.new()
+			var label := Label.new()
+			label.hint_tooltip = option.get("description", "")
+			control.size_flags_horizontal = SIZE_EXPAND_FILL
+			control.rect_clip_content = true
+			hbox.size_flags_horizontal = SIZE_EXPAND_FILL
+			label.size_flags_horizontal = SIZE_EXPAND_FILL
+			label.clip_text = true
+			label.mouse_filter = MOUSE_FILTER_STOP
+			label.text = name.capitalize()
+			hbox.add_child(label)
+			hbox.add_child(control)
+			options_container.add_child(hbox)
+
+
 func update_targets_gui() -> void:
 	for platform in platforms:
 		for arch in platforms[platform]:
 			var button_name: String = {
-				"86": "x86",
-				"86_64": "x86_64",
-				"arm7": "armv7",
-				"arm8": "arm64v8"
+				"x86": "86",
+				"x86_64": "86_64",
+				"armv7": "arm7",
+				"arm64v8": "arm8"
 			}.get(arch, arch)
 			
 			var container := $Container/Platforms/Architectures.get_node({
@@ -107,23 +145,29 @@ func build(data: Dictionary) -> int:
 	building_lib_item = data.lib_item
 	prev_build_failed = false
 	
-	var lib_config: ConfigFile = building_lib_item.get_meta("library").config_file
-	
-	print(lib_config.get_value("entry", "Language"))
-	var language: Dictionary = main.languages.get(lib_config.get_value("entry", "Language"), null)
+	var library: Dictionary = main.solution.libraries[building_lib_item.get_text(0)]
+	var language: Dictionary = main.languages.get(library.language, null)
 	if not language:
 		printerr("This library doesn't have an assigned language!")
 		call_deferred("finish_task")
+		return ERR_DOES_NOT_EXIST
 	
-	var library_name := building_lib_item.get_text(0)
+	var library_name: String = library.name
 	var build_path: String = language.build_path
-	var library_path: String = ProjectSettings.globalize_path("%s/%s" % [main.LIBRARY_DATA_FOLDER, library_name])
+	var library_path: String = library.data_folder
+	var lib_config: ConfigFile = library.native_lib.config_file
+	
 	var python := "python" if OS.has_feature("Windows") else "python3"
+	if OS.execute(python, ["--version"], true, []):
+		printerr("Python isn't installed or not part of your environment variables!")
+		printerr("Please setup python and restart the editor after that.")
+		call_deferred("finish_task")
+		return ERR_DOES_NOT_EXIST
 	
 	for platform in platforms:
 		var archs: Array = platforms[platform]
 		for arch in archs:
-			print("building library '%s' (%s, %s, %s)." % [library_path, platform, arch, target])
+			print("building library '%s' (%s, %s, %s)." % [library_name, platform, arch, target])
 			main.set_build_status_icon(building_lib_item, get_icon("Progress1", "EditorIcons"))
 			var extension: String = {
 				windows = "dll",
@@ -135,8 +179,12 @@ func build(data: Dictionary) -> int:
 			
 			var output := []
 			var exit := OS.execute(python, [
-				build_path,
-				library_path,
+				ProjectSettings.globalize_path("res://addons/silicon.util.gdnative_helper/main_build.py"),
+				build_path.get_base_dir(),
+				language.config_path,
+				library_name,
+				ProjectSettings.globalize_path("%s/bin/lib-%s.%s.%s.%s" % [library_path, library_name, platform, target, arch]),
+				ProjectSettings.globalize_path("%s/src" % library_path),
 				extension, platform,
 				arch, target
 			], true, output, true)
@@ -145,11 +193,8 @@ func build(data: Dictionary) -> int:
 				for out in output:
 					printerr(out)
 				prev_build_failed = true
-				main.set_build_status_icon(building_lib_item, get_icon("StatusError", "EditorIcons"))
-				building_lib_item = null
 				call_deferred("finish_task")
-				OS.request_attention()
-				return 1
+				return ERR_COMPILATION_FAILED
 			
 			for out in output:
 				print(out)
@@ -167,19 +212,19 @@ func build(data: Dictionary) -> int:
 				ios_arm64v8 = "iOS.arm64"
 			}[platform + "_" + arch]
 			
-			lib_config.set_value("entry", lib_name, "%s/%s/bin/lib-%s.%s.%s.%s.%s" % [main.LIBRARY_DATA_FOLDER, library_name, library_name, platform, target, arch, extension])
-			lib_config.save(building_lib_item.get_meta("library").resource_path)
+			lib_config.set_value("entry", lib_name, "%s/bin/lib-%s.%s.%s.%s.%s" % [library.data_folder, library_name, platform, target, arch, extension])
+			lib_config.save(library.native_lib.resource_path)
 	
 	print("Built '%s' successfully!" % library_name)
-	OS.request_attention()
-	main.set_build_status_icon(building_lib_item, get_icon("StatusSuccess", "EditorIcons"))
-	building_lib_item = null
 	call_deferred("finish_task")
-	return 0
+	return OK
 
 
 func finish_task() -> void:
-	thread.wait_to_finish()
+	var err: int = thread.wait_to_finish()
+	OS.request_attention()
+	main.set_build_status_icon(building_lib_item, get_icon("StatusError" if err else "StatusSuccess", "EditorIcons"))
+	building_lib_item = null
 	if not pending_tasks.empty():
 		var next_task: Dictionary = pending_tasks.pop_back()
 		thread.start(self, "build", next_task)
