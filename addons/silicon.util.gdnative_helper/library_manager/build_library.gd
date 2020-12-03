@@ -234,13 +234,14 @@ func build(data: Dictionary) -> int:
 				var err_text := ""
 				for line in output[0].split("\n"):
 					if line.find("error") != -1:
-						err_text += line
+						err_text += line + "\n"
 				
 				prev_build_failed = true
 				main.get_node("VBoxContainer/HBoxContainer2/ErrorText").text = err_text
 				call_deferred("finish_task")
 				return ERR_COMPILATION_FAILED
 			
+			main.get_node("VBoxContainer/HBoxContainer2/ErrorText").text = ""
 			print(output[0])
 			
 			var lib_name: String = {
