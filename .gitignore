@@ -11,3 +11,4 @@ native_solution.tres
 Library.gdnlib
 spinner.gdns
 test.gdns
+addons/silicon.util.gdnative_helper/build_config.json

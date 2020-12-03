@@ -1,6 +1,8 @@
 tool
 extends HBoxContainer
 
+signal path_changed(path)
+
 export var path := "" setget set_path
 export(int, "Open File", "Open Files", "Open Dir", "Open Any", "Save File") var mode := 0
 export var file_dialog: NodePath setget set_file_dialog
@@ -21,6 +23,7 @@ func _ready() -> void:
 func set_path(value: String) -> void:
 	path = value
 	$LineEdit.text = path
+	emit_signal("path_changed", path)
 
 
 func set_file_dialog(value: NodePath) -> void:
@@ -36,6 +39,7 @@ func _on_FileDialog_path_selected(path: String) -> void:
 
 func _on_LineEdit_text_changed(new_text: String) -> void:
 	path = new_text
+	emit_signal("path_changed", path)
 
 
 func _on_Button_pressed() -> void:

@@ -20,6 +20,12 @@
     "source_extension": "cpp",
     "header_extension": "hpp",
     "build_options": {
+        "godot_binding_version": {
+            "value": 0,
+            "description": "The version of godot cpp binding to use to build with.",
+            "hint": "ENUM",
+            "hint_string": "Master,1.0,1.1"
+        },
         "use_mingw": {
             "value": false,
             "description": "If true, Mingw will be used to compile to Windows instead of Visual Studio.\nOnly applicable on Windows host platforms."
@@ -31,12 +37,12 @@
         "android_ndk_path": {
             "value": "",
             "description": "The path to the android NDK root. \nRequired to compile to Android.",
-            "hint": "IS_FOLDER"
+            "hint": "FOLDER"
         },
         "xcode_path": {
             "value": "",
             "description": "The path to XCode. \nRequired to compile to iOS.",
-            "hint": "IS_FOLDER"
+            "hint": "FOLDER"
         }
     }
 }

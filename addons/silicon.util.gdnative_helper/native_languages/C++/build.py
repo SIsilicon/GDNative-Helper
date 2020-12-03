@@ -3,7 +3,18 @@ import os, sys, shutil, subprocess, multiprocessing
 from pathlib import Path
 
 def run_commands(cwd, args):
-	print(subprocess.check_output(args, shell=(os.name == "nt"), text=True, cwd=cwd))
+	result = subprocess.run(args, shell=(os.name == "nt"), text=True, cwd=cwd)
+	
+	if result.stdout:
+		print(result.stdout)
+		lines = result.stdout.splitlines()
+		for line in lines:
+			if "error" in line:
+				print(line, file=sys.stderr)
+	if result.stderr:
+		print(result.stderr, file=sys.stderr)
+	if result.returncode != 0:
+		exit(result.returncode)
 
 
 def unzip_url(url, dir, from_name, to_name):
@@ -29,7 +40,7 @@ def execute(args):
 	arch = args["arch"]
 	target = args["target"]
 
-	android_ndk_root = args["build_options"]["android_ndk_path"]["value"]
+	android_ndk_root = args["android_ndk_path"]
 
 	data_dir = Path(args["gd_settings_dir"])
 	bindings_path = data_dir / "godot-cpp"
@@ -74,6 +85,8 @@ def execute(args):
 				("android_arch=" + arch) if platform == "android" else "",
 				("ios_arch=" + arch) if platform == "ios" else "",
 				("ANDROID_NDK_ROOT=" + android_ndk_root) if platform == "android" else "",
+				"use_mingw=" + str(args["use_mingw"]),
+				"use_llvm=" + str(args["use_llvm"]),
 				"generate_bindings=yes",
 				"target=" + target,
 				"-j%s" % multiprocessing.cpu_count()
@@ -110,6 +123,8 @@ def execute(args):
 			("android_arch=" + arch) if platform == "android" else "",
 			("ios_arch=" + arch) if platform == "ios" else "",
 			("ANDROID_NDK_ROOT=" + android_ndk_root) if platform == "android" else "",
+			"use_mingw=" + str(args["use_mingw"]),
+			"use_llvm=" + str(args["use_llvm"]),
 			"cpp_bindings_path=" + ("%s/" % bindings_path),
 			"source_path=" + str(source_path),
 			"target_path=" + str(library_path) + "/",

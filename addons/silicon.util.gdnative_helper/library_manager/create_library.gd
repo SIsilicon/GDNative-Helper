@@ -39,8 +39,7 @@ func _on_confirmed() -> void:
 	var lib_name: String = library_path.get_file().replace(".gdnlib", "")
 	
 	main.solution.create_library(file_path, language)
-	
-	ResourceSaver.save(main.solution_path, main.solution, ResourceSaver.FLAG_CHANGE_PATH)
+	main.save_solution()
 	main.editor_file_system.scan()
 	main.reload_list()
 	hide()

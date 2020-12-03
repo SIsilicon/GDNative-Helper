@@ -5,6 +5,9 @@ extends Resource
 export var libraries := {}
 export var classes := {}
 
+export var platform_archs := {"windows": [], "linux": [], "osx": [], "android": [], "ios": []}
+export var debug_mode := true
+
 var languages: Dictionary
 
 func create_library(lib_path: String, language: String) -> void:
@@ -243,6 +246,8 @@ func Library() -> Dictionary:
 		header_file = "",
 		source_modified_time = 0,
 		header_modified_time = 0,
+		
+		build_options = {},
 		
 		# Includes source code and binary folder
 		data_folder = ""

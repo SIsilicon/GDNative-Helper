@@ -3,7 +3,7 @@ extends Control
 
 signal console_requested
 
-onready var tree: Tree = $VBoxContainer/HSplitContainer/Tree
+onready var tree: Tree = $VBoxContainer/HBoxContainer2/Tree
 
 var languages := {}
 
@@ -20,6 +20,11 @@ var solution: GDNativeSolution
 func _ready() -> void:
 	if not editor_file_system or not data_dir:
 		return
+	
+	var err_node: TextEdit = $VBoxContainer/HBoxContainer2/ErrorText
+	err_node.add_color_override("font_color_readonly", get_color("error_color", "Editor"))
+	err_node.add_stylebox_override("read_only", get_stylebox("normal", "Editor"))
+	err_node.add_stylebox_override("focus", get_stylebox("normal", "Editor"))
 	
 	if ResourceLoader.exists(solution_path):
 		solution = load(solution_path)
@@ -48,18 +53,10 @@ func _on_BuildLib_pressed() -> void:
 	$BuildLibraryDialog.popup_centered()
 
 
-func _on_OpenLibrary_pressed() -> void:
-	var library_name := current_library_item.get_text(0)
-	
-	var lib_path: String = solution.libraries[library_name].source_file
-	lib_path = ProjectSettings.globalize_path(lib_path)
-	OS.shell_open(lib_path)
-
-
 func _on_DeleteLib_pressed(confirmed := false) -> void:
 	if confirmed:
 		solution.delete_library(current_library_item.get_text(0))
-		ResourceSaver.save(solution_path, solution, ResourceSaver.FLAG_CHANGE_PATH)
+		save_solution()
 		editor_file_system.scan()
 		_on_Reload_pressed()
 	else:
@@ -80,7 +77,15 @@ func _on_Tree_item_selected() -> void:
 
 func _on_Tree_button_pressed(item: TreeItem, column: int, id: int) -> void:
 	if id == 0:
-		OS.shell_open(ProjectSettings.globalize_path(item.get_meta("source")))
+		var path: String
+		if Input.is_key_pressed(KEY_SHIFT):
+			path = item.get_meta("header")
+			if path.empty():
+				$NoHeaderDialog.popup_centered()
+				return
+		else:
+			path = item.get_meta("source")
+		OS.shell_open(ProjectSettings.globalize_path(path))
 	elif id == 1:
 		emit_signal("console_requested")
 
@@ -89,13 +94,17 @@ func _on_Reload_pressed() -> void:
 	reload_list()
 
 
+func _on_Debug_toggled(pressed: bool) -> void:
+	solution.debug_mode = pressed
+
+
 func _on_CreateClass_pressed() -> void:
 	$CreateClassDialog.popup_centered_ratio(0.3)
 
 func _on_DeleteClass_pressed(confirmed := false) -> void:
 	if confirmed:
 		solution.delete_class(current_class_item.get_text(0))
-		ResourceSaver.save(solution_path, solution, ResourceSaver.FLAG_CHANGE_PATH)
+		save_solution()
 		editor_file_system.scan()
 		_on_Reload_pressed()
 	else:
@@ -104,6 +113,9 @@ func _on_DeleteClass_pressed(confirmed := false) -> void:
 
 
 func _on_BuildIconUpdate_timeout() -> void:
+	if not tree_root:
+		return
+	
 	var lib_first_item := tree_root.get_next_visible(true)
 	var lib_item := lib_first_item
 	while lib_first_item:
@@ -127,18 +139,21 @@ func reload_list() -> void:
 	
 	# Load libraries
 	var libraries := solution.libraries
+	var script_msg := "Open Source File: %s\nHold shift to open Header File."
 	for lib in libraries:
 		var library = libraries[lib]
 		var lib_item := tree.create_item(tree_root)
-		lib_item.add_button(0, get_icon("Script", "EditorIcons"), 0, false, "Open Source File: " + library.source_file)
+		lib_item.add_button(0, get_icon("Script", "EditorIcons"), 0, false, script_msg % library.source_file)
 		lib_item.set_meta("source", library.source_file)
+		lib_item.set_meta("header", library.header_file)
 		lib_item.set_text(0, lib)
 		
 		var classes: Array = library.classes
 		for cls in classes:
 			var cls_item := tree.create_item(lib_item)
-			cls_item.add_button(0, get_icon("Script", "EditorIcons"), 0, false, "Open Source File: " + solution.class_abs_source_file(solution.classes[cls]))
+			cls_item.add_button(0, get_icon("Script", "EditorIcons"), 0, false, script_msg % solution.class_abs_source_file(solution.classes[cls]))
 			cls_item.set_meta("source", solution.class_abs_source_file(solution.classes[cls]))
+			cls_item.set_meta("header", solution.class_abs_header_file(solution.classes[cls]))
 			cls_item.set_text(0, cls)
 	
 	current_library_item = null
@@ -181,7 +196,8 @@ func set_build_status_icon(library_item: TreeItem, icon: Texture) -> void:
 		null: ""
 	}.get(icon, "icon error")
 	
-	library_item.erase_button(0, 1)
+	if library_item.get_button_count(0) > 1:
+		library_item.erase_button(0, 1)
 	library_item.add_button(0, icon, 1, false, tooltip)
 
 
@@ -189,10 +205,11 @@ func update_buttons() -> void:
 	var library_selected := current_library_item != null
 	var class_selected := current_class_item != null
 	
-	$VBoxContainer/HSplitContainer/VBoxContainer/DeleteLib.disabled = not library_selected
-	$VBoxContainer/HSplitContainer/VBoxContainer/BuildLib.disabled = not (library_selected and current_library_item.get_children())
-	$VBoxContainer/HSplitContainer/VBoxContainer/CreateClass.disabled = not library_selected
-	$VBoxContainer/HSplitContainer/VBoxContainer/DeleteClass.disabled = not class_selected
+	$VBoxContainer/HBoxContainer/Debug.pressed = solution.debug_mode
+	$VBoxContainer/HBoxContainer2/VBoxContainer/DeleteLib.disabled = not library_selected
+	$VBoxContainer/HBoxContainer2/VBoxContainer/BuildLib.disabled = not (library_selected and current_library_item.get_children())
+	$VBoxContainer/HBoxContainer2/VBoxContainer/CreateClass.disabled = not library_selected
+	$VBoxContainer/HBoxContainer2/VBoxContainer/DeleteClass.disabled = not class_selected
 
 
 func scan_languages() -> void:
@@ -250,3 +267,7 @@ func scan_languages() -> void:
 		
 		file_dir = dir.get_next()
 	dir.list_dir_end()
+
+
+func save_solution() -> void:
+	ResourceSaver.save(solution_path, solution, ResourceSaver.FLAG_CHANGE_PATH)

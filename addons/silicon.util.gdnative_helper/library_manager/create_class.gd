@@ -38,7 +38,7 @@ func _on_confirmed() -> void:
 	var lib_name: String = lib_item.get_text(0)
 	
 	main.solution.create_class(lib_name, cls_name, cls_path, cls_inherit)
-	ResourceSaver.save(main.solution_path, main.solution, ResourceSaver.FLAG_CHANGE_PATH)
+	main.save_solution()
 	main.editor_file_system.scan()
 	main.reload_list()
 	hide()
