@@ -19,23 +19,25 @@ All you have to do is place the `silicon.util.gdnative_helper` into your project
 ## Creating Libraries and Scripts
 
 Upon enabling the addon, a `GDNative` tab should appear at the bottom. Open it, and the following interface will show up.
-![library_tab](doc_images/library_tab.png)
-> *NOTE*: If you make any changes to the library and or scripts outside of this tab, you may use the `Reload List` button to update the list.
+![new_library_tab](doc_images/new_library_tab.png)
 
-To create a library, simply press the `Create New Library` button on the right. A popup will show up with what you need to set up to create said library.
+To create a library, simply press the `Create New Library` button. A popup will show up with what you need to set up to create said library.
 ![create_lib_dialog](doc_images/create_lib_dialog.png)
 
 Simple, right? Just press create and you've made a library!
 
-The next step would be to create a class within your library. Select your library, and like library, press the `Create Class` Button. Change some settings, and press create!
+The next step would be to create a class within your library. Select your library and press `Ctrl-Shift-A`. Change some settings, and press create!
 
 ![create_class_dialog](doc_images/create_class_dialog.png)
 
+By now, your UI will probably look similar to this.
+![library_tab](doc_images/library_tab.png)
+
 ## Editing your library's source code
 
-The source files for your library and scripts are generated in a folder in `addons` called `gdnative_data`. By default, a `.gdignore` file is generated along with the library, so you can't see them in the Godot editor. to compensate, click the button `Open Library Source` to view your selected library's source code.
+The source files for your library and scripts are generated in a folder in `addons` called `gdnative_data`. By default, a `.gdignore` file is generated along with the library, so you can't see them in the Godot editor. to compensate, click the script icon beside the library or class to view its source code. Hold shift to view its header file, if it has any.
 
-Programming in your library's configured language is out of scope of this plugin's capabilities however.
+Programming in your library's configured language is out of scope of this plugin's capabilities.
 
 ## Building your libraries
 
@@ -43,18 +45,20 @@ Now. The moment you've been waiting for. Once you've written your code, you can 
 Press the `Build Library` button and the following dialog will appear.
 ![build_lib_dialog](doc_images/build_lib_dialog.png)
 
-From here, you may choose what platforms you may compile to, as well as what target(debug/release) you're building for. Unfortunately, depending on your platform, there are some limitations to this.
+From here, you may choose what platforms you may compile to, as well as whether it builds in debug mode not. There are also build options that appear depending on the language.
+
+Unfortunately, depending on your platform, there are some limitations to cross-compiling. In the case of C++ as of writing:
 
 * Windows users can't cross compile to Mac, Linux, or iOS.
 * Linux users can't cross compile to iOS.
 
 These problems can be solved by using a virtual machine for each platform and running and building your projects from there.
 
-Once you're ready though, you can press the `Build` button and... wait. It will take a while for the building process to complete. In the case of C++, it will take even longer the first time since the bindings have to be compiled first.
+Once you're ready though, you can press the `Build Library` button and... wait. It will take a while for the building process to complete. In the case of C++, it will take even longer the first time since the bindings have to be compiled first.
 If you have multiple libraries, you can also have those pending to build i.e., build when the other library is done.
 
-Whether the building process succeeds or not, you'll find the errors, warnings and such in the `Output` tab. If the build process has succeeded, the static/dynamic libraries will be found in the `bin` folder for the built library. And that's pretty much it!
-> **WARNING**: On Windows, if you start the editor with a built dll already, you might come across a permission access error. If that happens, you'll have to manually delete the older dll before you can rebuild your library.
+Whether the building process succeeds or not, you'll find the errors, warnings and such in the space beside the list of libraries and classes. If the build process has succeeded, the static/dynamic libraries will be found in the `bin` folder for the built library. And that's pretty much it!
+> **WARNING**: On Windows, if you have a built dll already, you might come across a permission access error. If that happens, you'll have to manually delete the older dll before you can rebuild your library.
 
 ## Multiple languages
 
@@ -63,14 +67,7 @@ The default languages are C++ and C. However, you may set up other languages too
 * `library_templates`: File(s) named `library_template` will be used by the plugin to generate a library. It can have any extension.
 * `class_templates`: File(s) named `class_template` will be used by the plugin to generate a class. It can have any extension.
 * `build.py`: The plugin runs this python script to build with.
-
-With the build script, the plugin passes the following arguments to it.
-
-1. The path to a library's source and binary folders
-2. The extension of the resulting library
-3. The platform being built to
-4. The architecture (64-bit, armv7, etc...) being built to
-5. The target (debug or release) being built to
+* `config.json`: Additional per build data that is used by the build script.
 
 ## Contributing
 
