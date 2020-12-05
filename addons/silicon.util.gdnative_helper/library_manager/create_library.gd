@@ -2,12 +2,11 @@ tool
 extends ConfirmationDialog
 
 onready var main: Control = get_parent()
-onready var library_path: String = $Container/Path/LineEdit.text
+onready var library_path: String = $Container/Path/FileEdit.path
 onready var language: String = $Container/Language/OptionButton.get_item_text($Container/Language/OptionButton.get_selected_id())
 
 func _ready() -> void:
 	get_ok().text = "Create"
-	$Container/Path/Button.icon = get_icon("Folder", "EditorIcons")
 
 
 func _on_about_to_show() -> void:
@@ -16,20 +15,11 @@ func _on_about_to_show() -> void:
 
 func _on_Language_item_selected(index: int) -> void:
 	language = $Container/Language/OptionButton.get_item_text(index)
-
-
-func _on_Path_pressed() -> void:
-	$FileDialog.popup_centered_ratio(0.6)
-
-
-func _on_FileDialog_file_selected(path: String) -> void:
-	$Container/Path/LineEdit.text = path
-	library_path = path
 	update_configuration()
 
 
-func _on_LineEdit_path_changed(new_text: String) -> void:
-	library_path = new_text
+func _on_FileEdit_path_changed(path: String) -> void:
+	library_path = path
 	update_configuration()
 
 
@@ -57,6 +47,10 @@ func update_configuration() -> void:
 	
 	if not library_path.get_extension() == "gdnlib":
 		message += "[color=#FF0000]- The extension is not of a GDNativeLibrary(gdnlib)![/color]\n"
+		valid = false
+	
+	if main.languages[language].build_path.empty():
+		message += "[color=#FF0000]- Selected language has no build script!"
 		valid = false
 	
 	$Container/Config.bbcode_text = message

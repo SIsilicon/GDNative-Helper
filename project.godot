@@ -15,13 +15,13 @@ _global_script_classes=[ {
 "path": "res://addons/silicon.util.gdnative_helper/native_solution/gd_native_solution.gd"
 } ]
 _global_script_class_icons={
-"GDNativeSolution": ""
+"GDNativeSolution": "res://addons/silicon.util.gdnative_helper/native_solution/gd_native_solution.svg"
 }
 
 [application]
 
 config/name="GDNative Helper Plugin"
-run/main_scene="res://TestScene.tscn"
+run/main_scene="res://demo/TestScene.tscn"
 config/icon="res://icon.png"
 
 [editor_plugins]
@@ -30,6 +30,5 @@ enabled=PoolStringArray( "editor_icon_previewer", "godot-plugin-refresher", "sil
 
 [rendering]
 
-quality/driver/driver_name="GLES2"
 vram_compression/import_etc=true
 environment/default_environment="res://default_env.tres"

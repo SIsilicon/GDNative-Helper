@@ -77,7 +77,7 @@ def execute(args):
 	))
 
 	if not bindings_file.exists():
-		print("Generating binding library...")
+		print("\nGENERATING BINDINGS LIBRARY...\n")
 		run_commands(str(bindings_path), [
 			"scons",
 				"platform=" + platform,
@@ -92,29 +92,14 @@ def execute(args):
 				"-j%s" % multiprocessing.cpu_count()
 		])
 
-	# Create directory for library files to reside
-	try:
-		os.makedirs(library_path)
-	except: pass
-
-	# Get older dll out of the way.
-	lib_name = "%s.%s" % (target_file_path, library_extension)
-	try:
-		if os.path.exists(lib_name) and platform == "windows" and os.name == "nt":
-			# if os.path.exists(lib_name + ".old"):
-			# 	os.remove(lib_name + ".old")
-			os.replace(lib_name, lib_name + ".old")
-	except OSError as e:
-		raise OSError("%s: %s" % (e.strerror, lib_name))
-
-	# First we'll copy the SConstruct to the source code.
+	# Copy the SConstruct to the source code.
 	shutil.copyfile(
 		data_dir / "native_languages/C++/SConstruct",
 		library_path / "../SConstruct"
 	)
 
 	# Build source code
-	print("Building source")
+	print("\nBUILDING SOURCE...\n")
 	run_commands(str(library_path / ".."), [
 		"scons",
 			"platform=" + platform,

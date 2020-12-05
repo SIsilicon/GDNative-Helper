@@ -3,7 +3,6 @@ extends EditorPlugin
 
 var editor_settings: EditorSettings
 var data_dir: String
-
 var library_manager: Control
 
 func _enter_tree() -> void:
@@ -26,26 +25,27 @@ func _exit_tree() -> void:
 
 func _on_editor_script_changed(script: Script) -> void:
 	if script is NativeScript:
-		var script_editor := get_editor_interface().get_script_editor()
-		var tab_container := script_editor.get_child(0).get_child(1).get_child(1)
-		var script_text_editor := tab_container.get_child(script_editor.get_open_scripts().find(script))
-		var text_edit: TextEdit = script_text_editor.get_child(0).get_child(0).get_child(0)
-		if not text_edit:
-			return
-		
-		text_edit.syntax_highlighting = false
-		text_edit.breakpoint_gutter = false
-		text_edit.context_menu_enabled = false
-		text_edit.shortcut_keys_enabled = false
-		text_edit.readonly = true
-		
-		var solution: GDNativeSolution = library_manager.solution
-		var classs: Dictionary = library_manager.solution.find_class_by_script(script)
-		var file := File.new()
-		file.open(solution.class_abs_source_file(classs), File.READ)
-		text_edit.text = "READONLY DATA! EDIT YOUR CODE SOMEWHERE ELSE.\n\n"
-		text_edit.text += file.get_as_text()
-		file.close()
+		pass
+#		var script_editor := get_editor_interface().get_script_editor()
+#		var tab_container := script_editor.get_child(0).get_child(1).get_child(1)
+#		var script_text_editor := tab_container.get_child(script_editor.get_open_scripts().find(script))
+#		var text_edit: TextEdit = script_text_editor.get_child(0).get_child(0).get_child(0)
+#		if not text_edit:
+#			return
+#
+#		text_edit.syntax_highlighting = false
+#		text_edit.breakpoint_gutter = false
+#		text_edit.context_menu_enabled = false
+#		text_edit.shortcut_keys_enabled = false
+#		text_edit.readonly = true
+#
+#		var solution: GDNativeSolution = library_manager.solution
+#		var classs: Dictionary = library_manager.solution.find_class_by_script(script)
+#		var file := File.new()
+#		file.open(solution.class_abs_source_file(classs), File.READ)
+#		text_edit.text = "READONLY DATA! EDIT YOUR CODE SOMEWHERE ELSE.\n\n"
+#		text_edit.text += file.get_as_text()
+#		file.close()
 
 
 func _on_console_requested() -> void:

@@ -11,13 +11,15 @@ var file_dialog_node: FileDialog
 var selecting := false
 
 func _ready() -> void:
-	$Button.icon = get_icon("Folder", "EditorIcons")
 	if file_dialog:
 		file_dialog_node = get_node_or_null(file_dialog)
 	if file_dialog_node:
 		file_dialog_node.connect("dir_selected", self, "_on_FileDialog_path_selected")
 		file_dialog_node.connect("file_selected", self, "_on_FileDialog_path_selected")
 		file_dialog_node.connect("popup_hide", self, "_on_FileDialog_path_selected", ["CANCELLED"])
+	
+	yield(self, "visibility_changed")
+	$Button.icon = get_icon("Folder", "EditorIcons")
 
 
 func set_path(value: String) -> void:
@@ -46,5 +48,5 @@ func _on_Button_pressed() -> void:
 	if path.is_valid_filename():
 		file_dialog_node.filename = path
 	file_dialog_node.mode = mode
-	file_dialog_node.popup_centered()
+	file_dialog_node.popup_centered_ratio(0.6)
 	selecting = true

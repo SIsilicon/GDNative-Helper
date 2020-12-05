@@ -5,6 +5,8 @@ signal finished()
 
 const FileEdit = preload("res://addons/silicon.util.gdnative_helper/utils/file_edit.tscn")
 
+const LOG_PATH = "res://addons/silicon.util.gdnative_helper/build_log.txt"
+
 onready var main := get_parent()
 
 var mutex := Mutex.new()
@@ -15,7 +17,6 @@ var building_lib_item: TreeItem
 var prev_build_failed := false
 
 func _ready() -> void:
-	get_ok().text = "Build"
 	connect("finished", self, "finish_task")
 
 
@@ -27,10 +28,18 @@ func _notification(what: int) -> void:
 func _exit_tree() -> void:
 	if thread.is_active():
 		thread.wait_to_finish()
+	
+	var dir := Directory.new()
+	dir.remove(LOG_PATH)
+
+
+func _on_build_options_changed(value, option: String) -> void:
+	var library: Dictionary = main.solution.libraries[main.current_library_item.get_meta("name")]
+	library.build_options[option] = value
 
 
 func _on_about_to_show() -> void:
-	var library: String = main.current_library_item.get_text(0)
+	var library: String = main.current_library_item.get_meta("name")
 	update_targets_gui()
 	generate_build_gui(library)
 
@@ -49,25 +58,24 @@ func _on_Target_pressed(target: String) -> void:
 
 
 func _on_confirmed() -> void:
+	main.save_solution()
+
+
+func build_current_lib() -> void:
 	var task := {
 		platforms = main.solution.platform_archs,
 		target = "debug" if main.solution.debug_mode else "release",
 		lib_item = main.current_library_item
 	}
-	main.save_solution()
 	
 	if building_lib_item:
 		pending_tasks.append(task)
 	else:
+		main.error_logs.clear()
+		
 		if thread.is_active():
 			thread.wait_to_finish()
 		thread.start(self, "build", task)
-	hide()
-
-
-func _on_build_options_changed(value, option: String) -> void:
-	var library: Dictionary = main.solution.libraries[main.current_library_item.get_text(0)]
-	library.build_options[option] = value
 
 
 func generate_build_gui(lib_name: String) -> void:
@@ -178,7 +186,7 @@ func build(data: Dictionary) -> int:
 	building_lib_item = data.lib_item
 	prev_build_failed = false
 	
-	var library: Dictionary = main.solution.libraries[building_lib_item.get_text(0)]
+	var library: Dictionary = main.solution.libraries[building_lib_item.get_meta("name")]
 	var language: Dictionary = main.languages.get(library.language, null)
 	
 	var library_name: String = library.name
@@ -204,11 +212,14 @@ func build(data: Dictionary) -> int:
 	build_data_file.store_string(to_json(library.build_options))
 	build_data_file.close()
 	
+	var err_lines := []
+	var warning_lines := []
+	
 	# Loop through all the selected architectures and compile each
 	for platform in platforms:
 		var archs: Array = platforms[platform]
 		for arch in archs:
-			print("building library '%s' (%s, %s, %s)." % [library_name, platform, arch, target])
+			print("building '%s' (%s, %s, %s)." % [library_name, platform, arch, target])
 			main.set_build_status_icon(building_lib_item, get_icon("Progress1", "EditorIcons"))
 			var extension: String = {
 				windows = "dll",
@@ -229,20 +240,23 @@ func build(data: Dictionary) -> int:
 				arch, target
 			], true, output, true)
 			
+			for line in output[0].split("\n"):
+				if line.find("error") != -1:
+					main.error_logs.push_error(line)
+				elif line.find("warning") != -1:
+					main.error_logs.push_warning(line)
+			
+			var build_logs := File.new()
+			build_logs.open(LOG_PATH, File.WRITE_READ)
+			build_logs.seek_end()
+			build_logs.store_line("%s (%s, %s, %s)." % [library_name, platform, arch, target])
+			build_logs.store_string(output[0])
+			build_logs.store_line("\n")
+			
 			if exit:
-				printerr(output[0])
-				var err_text := ""
-				for line in output[0].split("\n"):
-					if line.find("error") != -1:
-						err_text += line + "\n"
-				
 				prev_build_failed = true
-				main.get_node("VBoxContainer/HBoxContainer2/ErrorText").text = err_text
 				call_deferred("finish_task")
 				return ERR_COMPILATION_FAILED
-			
-			main.get_node("VBoxContainer/HBoxContainer2/ErrorText").text = ""
-			print(output[0])
 			
 			var lib_name: String = {
 				windows_32 = "Windows.32",
