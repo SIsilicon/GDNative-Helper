@@ -5,7 +5,7 @@ sys.path.append(sys.argv[1])
 
 from build import execute
 
-with open("addons/silicon.util.gdnative_helper/build_config.json", 'r') as config:
+with open(os.path.join(Path(__file__).parent.absolute(), "build_config.json"), 'r') as config:
 	args = json.load(config)
 	args["library_name"] = sys.argv[2]
 	args["target_file_path"] = sys.argv[3]

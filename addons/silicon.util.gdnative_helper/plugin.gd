@@ -92,13 +92,13 @@ func modify_dir(dir: Directory, from: String, to: String, mode := "copy") -> int
 
 
 func setup_default_languages() -> void:
-	var plugin_dir := ProjectSettings.globalize_path("res://addons/silicon.util.gdnative_helper")
+	var plugin_dir := ProjectSettings.globalize_path(get_script().resource_path.get_base_dir())
 	var dir := Directory.new()
 	dir.open(editor_settings.get_project_settings_dir())
 	dir.change_dir("../..")
 	data_dir = dir.get_current_dir()
 	
-	var debug_languages := File.new().file_exists("res://addons/silicon.util.gdnative_helper/.debug_languages")
+	var debug_languages := File.new().file_exists(get_script().resource_path.get_base_dir().plus_file("debug_languages"))
 	dir.open("file://")
 	
 	if dir.dir_exists(plugin_dir + '/' + "native_languages"):
