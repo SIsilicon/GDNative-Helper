@@ -3,9 +3,9 @@ extends ConfirmationDialog
 
 signal finished()
 
-const FileEdit = preload("res://addons/silicon.util.gdnative_helper/utils/file_edit.tscn")
+const FileEdit = preload("../utils/file_edit.tscn")
 
-const LOG_PATH = "res://addons/silicon.util.gdnative_helper/build_log.txt"
+var LOG_PATH = get_script().resource_path.get_base_dir().plus_file("../build_log.txt")
 
 onready var main := get_parent()
 
@@ -204,7 +204,8 @@ func build(data: Dictionary) -> int:
 	
 	# Write the build options to a file for the build script to read
 	var build_data_file := File.new()
-	var err := build_data_file.open("res://addons/silicon.util.gdnative_helper/build_config.json", File.WRITE)
+	var config_path : String = get_script().resource_path.get_base_dir().get_base_dir().plus_file("build_config.json")
+	var err := build_data_file.open(config_path, File.WRITE)
 	if err:
 		printerr("Failed to transfer build options to builder script!")
 		call_deferred("finish_task")
@@ -231,7 +232,7 @@ func build(data: Dictionary) -> int:
 			
 			var output := []
 			var exit := OS.execute(python, [
-				ProjectSettings.globalize_path("res://addons/silicon.util.gdnative_helper/main_build.py"),
+				ProjectSettings.globalize_path(get_script().resource_path.get_base_dir().plus_file("../main_build.py")),
 				build_path.get_base_dir(),
 				library_name,
 				ProjectSettings.globalize_path("%s/bin/lib-%s.%s.%s.%s" % [library_path, library_name, platform, target, arch]),

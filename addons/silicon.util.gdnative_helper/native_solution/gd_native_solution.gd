@@ -1,5 +1,5 @@
 tool
-class_name GDNativeSolution, "res://addons/silicon.util.gdnative_helper/native_solution/gd_native_solution.svg"
+class_name GDNativeSolution, "../native_solution/gd_native_solution.svg"
 extends Resource
 
 export var libraries := {}
